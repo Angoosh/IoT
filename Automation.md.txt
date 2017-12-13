@@ -1,0 +1,15 @@
+HW:
+Arduino 101 Industrial
+
+Modules:
+Gas sensor
+Relay
+PT100
+servo
+led
+OLED LCD
+microSD reader
+
+Aditional HW:
+12V wall adaptor and DC-DC stepdown converter 12V->5V
+or 5V wall adaptor
