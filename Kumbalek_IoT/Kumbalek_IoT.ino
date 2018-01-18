@@ -107,9 +107,11 @@ void Aires(){
   OLED.print(air);
   if(air<100){
     OLED.print(" OK");
+    digitalWrite(LED,LOW);
   }
   else{
     OLED.print(" VENT!");
+    digitalWrite(LED,HIGH);
   }
 }
 
