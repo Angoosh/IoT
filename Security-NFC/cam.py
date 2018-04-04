@@ -2,7 +2,10 @@ import os
 import picamera
 import shutil
 import RPi.GPIO as GPIO
-from time import sleep as delay
+import smtplib
+import pickle
+import base64
+from time import sleep, gmtime, strftime
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
@@ -12,16 +15,18 @@ src = "/home/pi/Intruder"
 dst = "/home/pi/gdrivefs/Intruder/Dir"
 a = 0
 camera = picamera.PiCamera()
+server = smtplib.SMTP('smtp.gmail.com', 587)
+psswd = base64.b64decode(pickle.load(open("psswrd.p", "rb"))).decode("utf-8")
+mail = pickle.load(open("mail.p", "rb"))
 
 GPIO.setup(pin, GPIO.IN)
 GPIO.setup(20, GPIO.OUT)
 GPIO.output(20, 1)
-delay(5)
+sleep(5)
 GPIO.output(20, 0)
 
 while True:
 	i = GPIO.input(pin)
-	#i = input("INPUT: ")
 
 	if i:
 		if not os.path.exists(src):
@@ -34,9 +39,10 @@ while True:
 		camera.vflip = True
 		for i in range(0, 5):
 			x = str(i)
+			camera.annotate_text = strftime("%d-%m-%Y %H:%M:%S", gmtime())
 			camera.capture('Intruder/Intruda'+x+'.png')
 			print("Done: "+x)
-			delay(1)
+			sleep(1)
 		print("Captured")
 		if not os.path.exists(dst):
 			os.makedirs(dst)
@@ -47,5 +53,10 @@ while True:
 		print("Sending")
 		shutil.move(src, ndst)
 		print("Done!")
-		a+=1
 
+		server.starttls()
+		server.login(mail, psswd)
+		msg = "Prisel nezvany host. Kdo? To si najdes na googlu."
+		server.sendmail(mail, "angoosh3d@gmail.com", msg)
+		server.quit()
+		a+=1
