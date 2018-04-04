@@ -18,6 +18,7 @@ camera = picamera.PiCamera()
 server = smtplib.SMTP('smtp.gmail.com', 587)
 psswd = base64.b64decode(pickle.load(open("psswrd.p", "rb"))).decode("utf-8")
 mail = pickle.load(open("mail.p", "rb"))
+mailRecieve = pickle.load(open("mailR.p", "rb"))
 
 GPIO.setup(pin, GPIO.IN)
 GPIO.setup(20, GPIO.OUT)
@@ -57,6 +58,6 @@ while True:
 		server.starttls()
 		server.login(mail, psswd)
 		msg = "Prisel nezvany host. Kdo? To si najdes na googlu."
-		server.sendmail(mail, "angoosh3d@gmail.com", msg)
+		server.sendmail(mail, mailRecieve, msg)
 		server.quit()
 		a+=1
