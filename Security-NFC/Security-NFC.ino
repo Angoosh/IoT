@@ -48,7 +48,7 @@ void setup() {
   lcd.setCursor ( 0, 1 );
   lcd.print("Booting...");
   Serial.println("Booting...");   //debug
-  //while(digitalRead(Pi_Input)==LOW);  //signal od raspberry ze je zapnute a ze program bezi
+  while(digitalRead(Pi_Input)==LOW);  //signal od raspberry ze je zapnute a ze program bezi
   lcd.clear();  //vycisti display
 }
 
