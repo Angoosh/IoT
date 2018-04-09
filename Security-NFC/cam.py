@@ -11,7 +11,7 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 
 pin = 21
-src = "/home/pi/Intruder"
+src = "/home/pi/survelliance/Intruder"
 dst = "/home/pi/gdrivefs/Intruder/Dir"
 a = 0
 camera = picamera.PiCamera()
