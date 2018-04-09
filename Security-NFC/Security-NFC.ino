@@ -103,6 +103,7 @@ void nearfield(){
           digitalWrite(Pi, HIGH);
           delay(ta);
           digitalWrite(Pi, LOW);
+          lcd.print("Unknown");
         }
       }
     }
