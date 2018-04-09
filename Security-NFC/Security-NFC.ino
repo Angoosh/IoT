@@ -18,7 +18,7 @@ LiquidCrystal_I2C lcd(0x3F, 16, 2);
 
 //globalni promenne
 int ta = 10;  //delka aktivniho pulzu pro RPi
-int propusteni = 10; //jak dlouho muze clovek prochazet (s)
+int propusteni = 5; //jak dlouho muze clovek prochazet (s)
 
 //setup
 void setup() {
@@ -48,7 +48,7 @@ void setup() {
   lcd.setCursor ( 0, 1 );
   lcd.print("Booting...");
   Serial.println("Booting...");   //debug
-  while(digitalRead(Pi_Input)==LOW);  //signal od raspberry ze je zapnute a ze program bezi
+  //while(digitalRead(Pi_Input)==LOW);  //signal od raspberry ze je zapnute a ze program bezi
   lcd.clear();  //vycisti display
 }
 
@@ -81,29 +81,34 @@ void nearfield(){
         for (int c = 0; c < payloadLength; c++) {
           payloadAsString += (char)payload[c];
         }
-        if(payloadAsString=="en512"||payloadAsString=="en666"){ //kdyz se obsah rovna temto dvema hodnotam (provereni uzivatele)
+        if(payloadAsString=="en512"||payloadAsString=="en666"||payloadAsString=="enAngoosh"||payloadAsString=="enUfoga"){ //kdyz se obsah rovna temto dvema hodnotam (provereni uzivatele)
           digitalWrite(5, LOW);
           lcd.clear();
           //rozpoznavani uzivatelu
           if(payloadAsString=="en512"){ 
             lcd.print("Ufoga");
             digitalWrite(4, HIGH);
-            delay(propusteni*10);
+            delay(propusteni*1000);
             digitalWrite(4, LOW);
           }
           if(payloadAsString=="en666"){
             lcd.print("Angoosh");
             digitalWrite(3, HIGH);
-            delay(propusteni*10);
+            delay(propusteni*1000);
             digitalWrite(3, LOW);
           }
         }
         //kdyz si pokusi "pipnout" nedo jiny, tak ho to sejme taky
         else{
+          lcd.clear();
           digitalWrite(Pi, HIGH);
           delay(ta);
           digitalWrite(Pi, LOW);
           lcd.print("Unknown");
+          digitalWrite(5, LOW);
+          digitalWrite(4, LOW);
+          digitalWrite(3, LOW);
+          delay(1000);
         }
       }
     }
